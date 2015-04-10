@@ -29,4 +29,4 @@ namespace IQ2i\PrestaShopWebServiceBundle\Libraries;
 * @package PrestaShopWebservice
 */
 
-class PrestaShopWebserviceException extends \Exception { }
+class PrestaShopWebServiceException extends \Exception { }
