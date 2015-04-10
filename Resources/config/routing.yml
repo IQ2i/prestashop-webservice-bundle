@@ -1,3 +1,0 @@
-iq2i_presta_shop_web_service_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: IQ2iPrestaShopWebServiceBundle:Default:index }

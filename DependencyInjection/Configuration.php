@@ -18,11 +18,14 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('iq2i_presta_shop_web_service');
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode = $treeBuilder->root('iq2i_prestashop_web_service');
+        
+        $rootNode
+            ->children()
+                ->scalarNode('url')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('key')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('debug')->defaultFalse()->end()
+            ->end();
 
         return $treeBuilder;
     }
