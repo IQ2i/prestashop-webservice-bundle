@@ -12,7 +12,7 @@
         "symfony/symfony": ">=2.1"
     },
     "autoload": {
-        "psr-0": { "Symfony\\Bundle\\FrameworkBundle\\": "" }
+        "psr-0": { "IQ2i\\PrestaShopWebServiceBundle\\": "" }
     },
     "target-dir": "IQ2i/PrestaShopWebServiceBundle"
 }
