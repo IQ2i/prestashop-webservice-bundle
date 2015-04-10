@@ -1,0 +1,15 @@
+{
+    "name": "iq2i/prestashop-webservice-bundle",
+    "type": "symfony-bundle",
+    "description": "PrestaShop WebService library bundle",
+    "authors": [
+        {
+            "name": "Loïc Sapone - IQ2i",
+            "email": "contact@iq2i.com"
+        }
+    ],
+    "require": {
+        "symfony/symfony": ">=2.1"
+    },
+    "target-dir": "IQ2i/PrestaShopWebServiceBundle"
+}
