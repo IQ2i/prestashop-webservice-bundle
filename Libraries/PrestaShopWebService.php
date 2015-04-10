@@ -1,8 +1,8 @@
 <?php
 
-namespace IQ2i\PrestashopWebServiceBundle\Libraries;
+namespace IQ2i\PrestaShopWebServiceBundle\Libraries;
 
-use IQ2i\PrestashopWebServiceBundle\Libraries\PrestaShopWebserviceException;
+use IQ2i\PrestaShopWebServiceBundle\Libraries\PrestaShopWebserviceException;
 
 /*
 * 2007-2013 PrestaShop

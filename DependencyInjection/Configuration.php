@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('iq2i_presta_shop_web_service');
+        $rootNode = $treeBuilder->root('iq2i_prestashop_web_service');
         
         $rootNode
             ->children()

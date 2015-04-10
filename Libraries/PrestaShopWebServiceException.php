@@ -1,6 +1,6 @@
 <?php
 
-namespace IQ2i\PrestashopWebServiceBundle\Libraries;
+namespace IQ2i\PrestaShopWebServiceBundle\Libraries;
 
 /*
 * 2007-2013 PrestaShop
