@@ -1,4 +1,4 @@
 services:
-#    iq2i_presta_shop_web_service.example:
-#        class: IQ2i\PrestaShopWebServiceBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    iq2i_prestashop_web_service:
+        class: IQ2i\PrestashopWebServiceBundle\Services\IQ2iPrestashopWebService
+        arguments: [@service_container]
