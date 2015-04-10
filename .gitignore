@@ -1,7 +1,6 @@
 .DS_Store
 composer.phar
 /nbproject/
-composer.phar
 /vendor/
 /build/
 *~
