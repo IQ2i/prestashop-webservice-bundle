@@ -29,4 +29,15 @@ class IQ2iPrestaShopWebServiceExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
+    
+    /**
+     * Select an alias for the extension
+     * Trick allowing bypassing the Bundle::getContainerExtension check on getAlias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return 'iq2i_prestashop_web_service';
+    }
 }
