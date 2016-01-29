@@ -48,7 +48,7 @@ class PrestaShopWebService
 
 	/** @var array compatible versions of PrestaShop Webservice */
 	const psCompatibleVersionsMin = '1.4.0.0';
-	const psCompatibleVersionsMax = '1.6.1.1';
+	const psCompatibleVersionsMax = '1.6.1.4';
 
 	/**
 	 * PrestaShopWebService constructor. Throw an exception when CURL is not installed/activated
