@@ -2,7 +2,7 @@
     "name": "iq2i/prestashop-webservice-bundle",
     "type": "symfony-bundle",
     "description": "PrestaShop WebService library bundle",
-    "license": "GNU/GPL V2",
+    "license": "GPL-2.0",
     "authors": [
         {
             "name": "Loïc Sapone - IQ2i",
