@@ -23,7 +23,8 @@ class IQ2iPrestaShopWebService {
             $this->instance =  new PrestaShopWebService(
                 $this->container->getParameter('iq2i_prestashop_web_service.url'),
                 $this->container->getParameter('iq2i_prestashop_web_service.key'),
-                $this->container->getParameter('iq2i_prestashop_web_service.debug')
+                $this->container->getParameter('iq2i_prestashop_web_service.debug'),
+                $this->container->getParameter('iq2i_prestashop_web_service.json')
             );
         }
         return $this->instance;

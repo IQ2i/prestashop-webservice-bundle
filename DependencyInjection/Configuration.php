@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('url')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('key')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('debug')->defaultFalse()->end()
+                ->scalarNode('json')->defaultFalse()->end()
             ->end();
 
         return $treeBuilder;

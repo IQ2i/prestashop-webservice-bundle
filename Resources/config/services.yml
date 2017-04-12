@@ -1,4 +1,4 @@
 services:
     iq2i_prestashop_web_service:
         class: IQ2i\PrestaShopWebServiceBundle\Services\IQ2iPrestaShopWebService
-        arguments: [@service_container]
+        arguments: ["@service_container"]

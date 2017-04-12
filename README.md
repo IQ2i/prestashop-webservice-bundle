@@ -35,6 +35,7 @@ iq2i_prestashop_web_service:
     url: http://yourprestashop.com/
     key: G5U3GCMX88EF9SFYKN82PBRYJAQQ3Z2G
     debug: false
+    json: true
 ```
 
 ## Use in your application
@@ -57,11 +58,15 @@ class DefaultController extends Controller
         
         $presta = $this->container->get('iq2i_prestashop_web_service')->getInstance();
         $result = $presta->get(array(
-            "resource" => "orders"
+            "resource" => "orders",
+            /* fetch all available informations instead of only ID's */
+            "display" => "full"
         ));
-        var_dump($result);
-        die();
+        dump($result);
         return $this->render('default/index.html.twig');
     }
 }
 ```
+## Additional resources
+
+[Web service reference](http://doc.prestashop.com/display/PS16/Web+service+reference)

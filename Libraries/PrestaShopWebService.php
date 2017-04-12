@@ -3,6 +3,7 @@
 namespace IQ2i\PrestaShopWebServiceBundle\Libraries;
 
 use IQ2i\PrestaShopWebServiceBundle\Libraries\PrestaShopWebServiceException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /*
 * 2007-2013 PrestaShop
@@ -43,6 +44,9 @@ class PrestaShopWebService
 	/** @var boolean is debug activated */
 	protected $debug;
 
+    /** @var boolean is response format JSON */
+	protected $json;
+
 	/** @var string PS version */
 	protected $version;
 
@@ -50,32 +54,35 @@ class PrestaShopWebService
 	const psCompatibleVersionsMin = '1.4.0.0';
 	const psCompatibleVersionsMax = '1.6.99.99';
 
-	/**
-	 * PrestaShopWebService constructor. Throw an exception when CURL is not installed/activated
-	 * <code>
-	 * <?php
-	 * require_once('./PrestaShopWebService.php');
-	 * try
-	 * {
-	 * 	$ws = new PrestaShopWebService('http://mystore.com/', 'ZQ88PRJX5VWQHCWE4EE7SQ7HPNX00RAJ', false);
-	 * 	// Now we have a webservice object to play with
-	 * }
-	 * catch (PrestaShopWebServiceException $ex)
-	 * {
-	 * 	echo 'Error : '.$ex->getMessage();
-	 * }
-	 * ?>
-	 * </code>
-	 * @param string $url Root URL for the shop
-	 * @param string $key Authentification key
-	 * @param mixed $debug Debug mode Activated (true) or deactivated (false)
-	*/
-	function __construct($url, $key, $debug = true) {
+    /**
+     * PrestaShopWebService constructor. Throw an exception when CURL is not installed/activated
+     * <code>
+     * <?php
+     * require_once('./PrestaShopWebService.php');
+     * try
+     * {
+     *    $ws = new PrestaShopWebService('http://mystore.com/', 'ZQ88PRJX5VWQHCWE4EE7SQ7HPNX00RAJ', false);
+     *    // Now we have a webservice object to play with
+     * }
+     * catch (PrestaShopWebServiceException $ex)
+     * {
+     *    echo 'Error : '.$ex->getMessage();
+     * }
+     * ?>
+     * </code>
+     * @param string $url Root URL for the shop
+     * @param string $key Authentification key
+     * @param mixed $debug Debug mode Activated (true) or deactivated (false)
+     * @param bool $json Return format JSON (true) or XML (false)
+     * @throws \IQ2i\PrestaShopWebServiceBundle\Libraries\PrestaShopWebServiceException
+     */
+	function __construct($url, $key, $debug = true, $json = false) {
 		if (!extension_loaded('curl'))
 		  throw new PrestaShopWebServiceException('Please activate the PHP extension \'curl\' to allow use of PrestaShop webservice library');
 		$this->url = $url;
 		$this->key = $key;
 		$this->debug = $debug;
+		$this->json = $json;
 		$this->version = 'unknown';
 	}
 
@@ -214,6 +221,26 @@ class PrestaShopWebService
 			throw new PrestaShopWebServiceException('HTTP response is empty');
 	}
 
+
+    /**
+     * Load JSON from string. Can throw exception
+     * @param string $response String from a CURL response
+     * @return mixed
+     * @throws \IQ2i\PrestaShopWebServiceBundle\Libraries\PrestaShopWebServiceException
+     */
+    protected function parseJSON($response)
+    {
+        if ($response != '')
+        {
+            $json_string = substr($response, 3);
+            $json = json_decode($json_string, true);
+
+            return $json;
+        }
+        else
+            throw new PrestaShopWebServiceException('HTTP response is empty');
+    }
+
 	/**
 	 * Add (POST) a resource
 	 * <p>Unique parameter must take : <br><br>
@@ -244,34 +271,35 @@ class PrestaShopWebService
 		return self::parseXML($request['response']);
 	}
 
-	/**
- 	 * Retrieve (GET) a resource
-	 * <p>Unique parameter must take : <br><br>
-	 * 'url' => Full URL for a GET request of Webservice (ex: http://mystore.com/api/customers/1/)<br>
-	 * OR<br>
-	 * 'resource' => Resource name,<br>
-	 * 'id' => ID of a resource you want to get<br><br>
-	 * </p>
-	 * <code>
-	 * <?php
-	 * require_once('./PrestaShopWebService.php');
-	 * try
-	 * {
-	 * $ws = new PrestaShopWebService('http://mystore.com/', 'ZQ88PRJX5VWQHCWE4EE7SQ7HPNX00RAJ', false);
-	 * $xml = $ws->get(array('resource' => 'orders', 'id' => 1));
-	 *	// Here in $xml, a SimpleXMLElement object you can parse
-	 * foreach ($xml->children()->children() as $attName => $attValue)
-	 * 	echo $attName.' = '.$attValue.'<br />';
-	 * }
-	 * catch (PrestaShopWebServiceException $ex)
-	 * {
-	 * 	echo 'Error : '.$ex->getMessage();
-	 * }
-	 * ?>
-	 * </code>
-	 * @param array $options Array representing resource to get.
-	 * @return SimpleXMLElement status_code, response
-	 */
+    /**
+     * Retrieve (GET) a resource
+     * <p>Unique parameter must take : <br><br>
+     * 'url' => Full URL for a GET request of Webservice (ex: http://mystore.com/api/customers/1/)<br>
+     * OR<br>
+     * 'resource' => Resource name,<br>
+     * 'id' => ID of a resource you want to get<br><br>
+     * </p>
+     * <code>
+     * <?php
+     * require_once('./PrestaShopWebService.php');
+     * try
+     * {
+     * $ws = new PrestaShopWebService('http://mystore.com/', 'ZQ88PRJX5VWQHCWE4EE7SQ7HPNX00RAJ', false);
+     * $xml = $ws->get(array('resource' => 'orders', 'id' => 1));
+     *    // Here in $xml, a SimpleXMLElement object you can parse
+     * foreach ($xml->children()->children() as $attName => $attValue)
+     *    echo $attName.' = '.$attValue.'<br />';
+     * }
+     * catch (PrestaShopWebServiceException $ex)
+     * {
+     *    echo 'Error : '.$ex->getMessage();
+     * }
+     * ?>
+     * </code>
+     * @param array $options Array representing resource to get.
+     *
+     * @return SimpleXMLElement|JsonResponse
+     */
 	public function get($options)
 	{
 		if (isset($options['url']))
@@ -288,6 +316,9 @@ class PrestaShopWebService
 				foreach ($options as $k => $o)
 					if (strpos($k, $p) !== false)
 						$url_params[$k] = $options[$k];
+
+			$this->json ? $url_params['output_format'] = 'JSON' : false;
+
 			if (count($url_params) > 0)
 				$url .= '?'.http_build_query($url_params);
 		}
@@ -297,7 +328,7 @@ class PrestaShopWebService
 		$request = self::executeRequest($url, array(CURLOPT_CUSTOMREQUEST => 'GET'));
 
 		self::checkStatusCode($request['status_code']);// check the response validity
-		return self::parseXML($request['response']);
+		return $this->json ? self::parseJSON($request['response']) : self::parseXML($request['response']);
 	}
 
 	/**
