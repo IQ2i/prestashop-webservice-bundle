@@ -5,15 +5,9 @@ This version of the bundle requires Symfony 2.1+.
 
 ## Installation
 
-#### Step 1: Add bundle in composer.json
+#### Step 1: Add dependency via Composer
 
-```js
-{
-    "require": {
-        "iq2i/prestashop-webservice-bundle": "dev-master"
-    }
-}
-```
+```composer require iq2i/prestashop-webservice-bundle```
 
 #### Step 2: Active in app/AppKernel.php
 
@@ -22,7 +16,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new \IQ2i\PrestaShopWebServiceBundle\IQ2iPrestaShopWebServiceBundle(),
+        new IQ2i\PrestaShopWebServiceBundle\IQ2iPrestaShopWebServiceBundle(),
     );
 }
 ```
@@ -32,9 +26,15 @@ public function registerBundles()
 ``` yaml
 # app/config/config.yml
 iq2i_prestashop_web_service:
-    url: http://yourprestashop.com/
-    key: G5U3GCMX88EF9SFYKN82PBRYJAQQ3Z2G
-    debug: false
+    connections:
+        my_prestashop_1:
+            url: http://my-prestashop-1.com/
+            key: G5U3GCMX88EF9SFYKN82PBRYJAQQ3Z2G
+            debug: false
+        my_prestashop_2:
+            url: http://my-prestashop-1.com/
+            key: G5U3GCMX88EF9SFYKN82PBRYJAQQ3Z2G
+            debug: false
 ```
 
 ## Use in your application
@@ -50,18 +50,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/app/example", name="homepage")
+     * @Route("/", name="homepage")
      */
     public function indexAction()
     {
         
-        $presta = $this->container->get('iq2i_prestashop_web_service')->getInstance();
+        $presta = $this->container->get('iq2i_prestashop_web_service')->getInstance('my_prestashop_1');
         $result = $presta->get(array(
             "resource" => "orders"
         ));
         var_dump($result);
         die();
-        return $this->render('default/index.html.twig');
     }
 }
 ```

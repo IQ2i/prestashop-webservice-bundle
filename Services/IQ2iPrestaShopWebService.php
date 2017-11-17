@@ -2,6 +2,7 @@
 
 namespace IQ2i\PrestaShopWebServiceBundle\Services;
 
+use InvalidArgumentException;
 use IQ2i\PrestaShopWebServiceBundle\Libraries\PrestaShopWebService;
 
 /**
@@ -18,12 +19,20 @@ class IQ2iPrestaShopWebService {
         $this->em        = $container->get('doctrine')->getManager();
     }
     
-    public function getInstance(){
-        if(is_null($this->instance)){
+    public function getInstance($name = null) {
+        if (is_null($this->instance)){
+            if ($name === null) {
+                throw new InvalidArgumentException("You must specified a connection name.");
+            }
+            
+            if (!$this->container->hasParameter('iq2i_prestashop_web_service.connections.'.$name.'.url')) {
+                throw new InvalidArgumentException("You must specified a valid connection name.");
+            }
+            
             $this->instance =  new PrestaShopWebService(
-                $this->container->getParameter('iq2i_prestashop_web_service.url'),
-                $this->container->getParameter('iq2i_prestashop_web_service.key'),
-                $this->container->getParameter('iq2i_prestashop_web_service.debug')
+                $this->container->getParameter('iq2i_prestashop_web_service.connections.'.$name.'.url'),
+                $this->container->getParameter('iq2i_prestashop_web_service.connections.'.$name.'.key'),
+                $this->container->getParameter('iq2i_prestashop_web_service.connections.'.$name.'.debug')
             );
         }
         return $this->instance;
