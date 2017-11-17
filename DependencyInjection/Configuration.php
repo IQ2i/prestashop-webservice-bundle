@@ -22,9 +22,17 @@ class Configuration implements ConfigurationInterface
         
         $rootNode
             ->children()
-                ->scalarNode('url')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('key')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('debug')->defaultFalse()->end()
+                ->arrayNode('connections')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('url')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('key')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('debug')->defaultFalse()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

@@ -22,8 +22,10 @@ class IQ2iPrestaShopWebServiceExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         
-        foreach($config as $name => $node){
-            $container->setParameter('iq2i_prestashop_web_service.'.$name, $node);
+        foreach ($config['connections'] as $connectionName => $connectionConfig) {
+            foreach ($connectionConfig as $configName => $configValue) {
+                $container->setParameter('iq2i_prestashop_web_service.connections.'.$connectionName.'.'.$configName, $configValue);
+            }
         }
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
