@@ -270,9 +270,10 @@ class PrestaShopWebService
 	 * ?>
 	 * </code>
 	 * @param array $options Array representing resource to get.
+     * @param bool $parse Parse XML or return raw response
 	 * @return SimpleXMLElement status_code, response
 	 */
-	public function get($options)
+	public function get($options, bool $parse = true)
 	{
 		if (isset($options['url']))
 			$url = $options['url'];
@@ -297,7 +298,12 @@ class PrestaShopWebService
 		$request = self::executeRequest($url, array(CURLOPT_CUSTOMREQUEST => 'GET'));
 
 		self::checkStatusCode($request['status_code']);// check the response validity
-		return self::parseXML($request['response']);
+
+		if ($parse) {
+		    return self::parseXML($request['response']);
+		} else {
+		    return $request['response'];
+		}
 	}
 
 	/**
